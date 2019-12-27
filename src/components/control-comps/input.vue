@@ -1,91 +1,92 @@
 <template>
   <div class="ncform-input">
-    <!-- 没有自动补全 -->
-    <el-input
-      v-if="!mergeConfig.autocomplete"
-      :size="mergeConfig.size"
-      :disabled="disabled"
-      :readonly="readonly"
-      :placeholder="placeholder"
-      v-show="!hidden"
-      :clearable="mergeConfig.clearable"
-      :type="mergeConfig.type === 'file' ? 'text' : mergeConfig.type"
-      :prefix-icon="mergeConfig.prefixIcon"
-      :suffix-icon="mergeConfig.suffixIcon"
-      @blur="onBlur"
-      v-model="inputVal"
-    >
-      <template v-if="mergeConfig.type !== 'file' && mergeConfig.compound">
-        <template
-          slot="prepend"
-          v-if="mergeConfig.compound.prependLabel"
-        >{{mergeConfig.compound.prependLabel}}</template>
-        <template
-          slot="append"
-          v-if="mergeConfig.compound.appendLabel"
-        >{{mergeConfig.compound.appendLabel}}</template>
+    <md-field v-if="!mergeConfig.autocomplete" :md-clearable="mergeConfig.clearable">
+      <span v-if="mergeConfig.prefixIcon" class="md-prefix"><i :class="mergeConfig.prefixIcon"></i></span>
+      <!-- 没有自动补全 -->
+      <md-input
+        :size="mergeConfig.size"
+        :disabled="disabled"
+        :readonly="readonly"
+        :placeholder="placeholder"
+        v-show="!hidden"
+        :type="mergeConfig.type === 'file' ? 'text' : mergeConfig.type"
+        @blur="onBlur"
+        v-model="inputVal"
+      >
+        <!-- <template v-if="mergeConfig.type !== 'file' && mergeConfig.compound">
+          <template
+            slot="prepend"
+            v-if="mergeConfig.compound.prependLabel"
+          >{{mergeConfig.compound.prependLabel}}</template>
+          <template
+            slot="append"
+            v-if="mergeConfig.compound.appendLabel"
+          >{{mergeConfig.compound.appendLabel}}</template>
 
-        <el-button
-          slot="prepend"
-          v-if="mergeConfig.compound.prependIcon"
-          :icon="mergeConfig.compound.prependIcon"
-        ></el-button>
-        <el-button
-          slot="append"
-          v-if="mergeConfig.compound.appendIcon"
-          :icon="mergeConfig.compound.appendIcon"
-        ></el-button>
+          <el-button
+            slot="prepend"
+            v-if="mergeConfig.compound.prependIcon"
+            :icon="mergeConfig.compound.prependIcon"
+          ></el-button>
+          <el-button
+            slot="append"
+            v-if="mergeConfig.compound.appendIcon"
+            :icon="mergeConfig.compound.appendIcon"
+          ></el-button>
 
-        <el-select
-          v-if="mergeConfig.compound.prependSelect"
-          v-model="prependSelectVal"
-          slot="prepend"
-          :placeholder="mergeConfig.compound.prependSelect.placeholder || $nclang('selectPls')"
-        >
-          <el-option
-            v-for="item in prependSelectOptions"
-            :label="item[mergeConfig.compound.prependSelect.itemLabelField]"
-            :value="item[mergeConfig.compound.prependSelect.itemValueField]"
-            :key="item[mergeConfig.compound.prependSelect.itemValueField]"
-          ></el-option>
-        </el-select>
-
-        <el-select
-          v-if="mergeConfig.compound.appendSelect"
-          v-model="appendSelectVal"
-          slot="append"
-          :placeholder="mergeConfig.compound.appendSelect.placeholder || $nclang('selectPls')"
-        >
-          <el-option
-            v-for="item in appendSelectOptions"
-            :label="item[mergeConfig.compound.appendSelect.itemLabelField]"
-            :value="item[mergeConfig.compound.appendSelect.itemValueField]"
-            :key="item[mergeConfig.compound.appendSelect.itemValueField]"
-          ></el-option>
-        </el-select>
-      </template>
-
-      <!--上传类型-->
-      <template v-else-if="mergeConfig.type === 'file' && mergeConfig.upload">
-        <el-button
-          slot="append"
-          v-if="mergeConfig.upload.uploadUrl"
-          class="ncform-input-upload"
-          @click="handleClickUpload"
-        >
-          {{isUploading ? $nclang('uploading') : mergeConfig.upload.uploadText || $nclang('upload')}}
-          <input
-            type="file"
-            ref="upload"
-            :accept="mergeConfig.upload.accept || ''"
-            @change="handleFileChange"
+          <el-select
+            v-if="mergeConfig.compound.prependSelect"
+            v-model="prependSelectVal"
+            slot="prepend"
+            :placeholder="mergeConfig.compound.prependSelect.placeholder || $nclang('selectPls')"
           >
-        </el-button>
-      </template>
-    </el-input>
+            <el-option
+              v-for="item in prependSelectOptions"
+              :label="item[mergeConfig.compound.prependSelect.itemLabelField]"
+              :value="item[mergeConfig.compound.prependSelect.itemValueField]"
+              :key="item[mergeConfig.compound.prependSelect.itemValueField]"
+            ></el-option>
+          </el-select>
+
+          <el-select
+            v-if="mergeConfig.compound.appendSelect"
+            v-model="appendSelectVal"
+            slot="append"
+            :placeholder="mergeConfig.compound.appendSelect.placeholder || $nclang('selectPls')"
+          >
+            <el-option
+              v-for="item in appendSelectOptions"
+              :label="item[mergeConfig.compound.appendSelect.itemLabelField]"
+              :value="item[mergeConfig.compound.appendSelect.itemValueField]"
+              :key="item[mergeConfig.compound.appendSelect.itemValueField]"
+            ></el-option>
+          </el-select>
+        </template> -->
+
+        <!--上传类型-->
+        <!-- <template v-else-if="mergeConfig.type === 'file' && mergeConfig.upload">
+          <el-button
+            slot="append"
+            v-if="mergeConfig.upload.uploadUrl"
+            class="ncform-input-upload"
+            @click="handleClickUpload"
+          >
+            {{isUploading ? $nclang('uploading') : mergeConfig.upload.uploadText || $nclang('upload')}}
+            <input
+              type="file"
+              ref="upload"
+              :accept="mergeConfig.upload.accept || ''"
+              @change="handleFileChange"
+            >
+          </el-button>
+        </template> -->
+      </md-input>
+      <span v-if="mergeConfig.suffixIcon" class="md-suffix"><i :class="mergeConfig.suffixIcon"></i></span>
+    </md-field>
+
 
     <!-- 自动补全 -->
-    <el-autocomplete
+    <!-- <el-autocomplete
       v-else
       :disabled="disabled"
       :readonly="readonly"
@@ -159,25 +160,19 @@
           ></el-option>
         </el-select>
       </template>
-    </el-autocomplete>
+    </el-autocomplete> -->
   </div>
 </template>
 
 <style lang="scss">
 .ncform-input {
-  .el-select .el-input {
-    width: 130px;
-  }
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-  .ncform-input-upload {
-    [type="file"] {
-      display: none;
+  .md-field {
+    padding-top: 0;
+    min-height: auto;
+    margin-bottom: 0;
+    .md-clear {
+      top: 0;
     }
-  }
-  .el-autocomplete {
-    width: 100%;
   }
 }
 </style>

@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="../demo.css" />
 
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" />
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script>
       var _hmt = _hmt || [];
@@ -42,7 +44,7 @@
 
     <script type="text/javascript" src="../../node_modules/lodash/lodash.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vue-material"></script>
     <script type="text/javascript" src="../../node_modules/@ncform/ncform-common/dist/ncformCommon.min.js"></script>
     <script type="text/javascript" src="../../node_modules/@ncform/ncform/dist/vueNcform.min.js"></script>
     <script type="text/javascript" src="../../dist/input.js"></script>
@@ -55,6 +57,7 @@
         lang = 'cn';
       }
 
+      Vue.use(VueMaterial.default)
       Vue.use(vueNcform, { extComponents: { input: input.default, object: object.default }, lang: lang === 'cn' ? 'zh_cn' : 'en' });
 
       let formSchemas = [

@@ -12,43 +12,43 @@ const webpackConfig = {
 
   entry: {
     input: path.join(config.src, "components", "control-comps", "input.vue"),
-    radio: path.join(config.src, "components", "control-comps", "radio.vue"),
-    checkbox: path.join(
-      config.src,
-      "components",
-      "control-comps",
-      "checkbox.vue"
-    ),
-    upload: path.join(config.src, "components", "control-comps", "upload.vue"),
-    inputNumber: path.join(
-      config.src,
-      "components",
-      "control-comps",
-      "input-number.vue"
-    ),
-    textarea: path.join(
-      config.src,
-      "components",
-      "control-comps",
-      "textarea.vue"
-    ),
-    select: path.join(config.src, "components", "control-comps", "select.vue"),
-    colorPicker: path.join(
-      config.src,
-      "components",
-      "control-comps",
-      "color-picker.vue"
-    ),
-    datePicker: path.join(
-      config.src,
-      "components",
-      "control-comps",
-      "date-picker.vue"
-    ),
-    slider: path.join(config.src, "components", "control-comps", "slider.vue"),
-    rate: path.join(config.src, "components", "control-comps", "rate.vue"),
-    label: path.join(config.src, "components", "control-comps", "label.vue"),
-    switch: path.join(config.src, "components", "control-comps", "switch.vue"),
+    // radio: path.join(config.src, "components", "control-comps", "radio.vue"),
+    // checkbox: path.join(
+    //   config.src,
+    //   "components",
+    //   "control-comps",
+    //   "checkbox.vue"
+    // ),
+    // upload: path.join(config.src, "components", "control-comps", "upload.vue"),
+    // inputNumber: path.join(
+    //   config.src,
+    //   "components",
+    //   "control-comps",
+    //   "input-number.vue"
+    // ),
+    // textarea: path.join(
+    //   config.src,
+    //   "components",
+    //   "control-comps",
+    //   "textarea.vue"
+    // ),
+    // select: path.join(config.src, "components", "control-comps", "select.vue"),
+    // colorPicker: path.join(
+    //   config.src,
+    //   "components",
+    //   "control-comps",
+    //   "color-picker.vue"
+    // ),
+    // datePicker: path.join(
+    //   config.src,
+    //   "components",
+    //   "control-comps",
+    //   "date-picker.vue"
+    // ),
+    // slider: path.join(config.src, "components", "control-comps", "slider.vue"),
+    // rate: path.join(config.src, "components", "control-comps", "rate.vue"),
+    // label: path.join(config.src, "components", "control-comps", "label.vue"),
+    // switch: path.join(config.src, "components", "control-comps", "switch.vue"),
     // Don't touch me - controls
 
     object: path.join(config.src, "components", "layout-comps", "object.vue"),
@@ -96,11 +96,11 @@ const webpackConfig = {
       commonjs: "@ncform/ncform-common",
       amd: "ncformCommon"
     },
-    "element-ui": {
-      root: "ELEMENT",
-      commonjs2: "element-ui",
-      commonjs: "element-ui",
-      amd: "ELEMENT"
+    "vue-material": {
+      root: "VueMaterial",
+      commonjs2: "vue-material",
+      commonjs: "vue-material",
+      amd: "VueMaterial"
     }
   },
 
@@ -145,8 +145,8 @@ const webpackConfig = {
 module.exports = [
   webpackConfig,
   Object.assign({}, webpackConfig, {
-    entry: {
-      ncformStdComps: path.join(config.src, 'components', 'index.js'),
-    }
+    // entry: {
+    //   ncformStdComps: path.join(config.src, 'components', 'index.js'),
+    // }
   })
 ]

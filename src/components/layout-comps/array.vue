@@ -4,7 +4,7 @@
 
     <legend v-if="schema.ui.legend && schema.ui.showLegend" @click="collapse()">
       {{_analyzeVal(schema.ui.legend)}}
-      <i v-if="!mergeConfig.disableCollapse" class="el-collapse-item__arrow" :class="{'el-icon-arrow-up': !collapsed, 'el-icon-arrow-down': collapsed}"></i>
+      <i v-if="!mergeConfig.disableCollapse" class="fa" :class="{'fa-angle-down': !collapsed, 'fa-angle-up': collapsed}"></i>
     </legend>
 
     <div v-show="!collapsed" v-for="(dataItem, idx) in schema.value" :key="dataItem.__dataSchema.__id" class="list-item">
@@ -13,12 +13,12 @@
         <label>{{_analyzeVal(dataItem.__dataSchema.ui.label)}} {{idx + 1}}</label>
 
         <!-- 项控制按钮 -->
-        <div class="el-button-group">
-          <button @click="collapseItem(dataItem.__dataSchema)" v-show="dataItem.__dataSchema._expand" v-if="!mergeConfig.disableItemCollapse" type="button" class="el-button el-button--mini"><i class="el-icon-arrow-down"></i></button>
-          <button @click="collapseItem(dataItem.__dataSchema)" v-show="!dataItem.__dataSchema._expand" v-if="!mergeConfig.disableItemCollapse" type="button" class="el-button el-button--mini"><i class="el-icon-arrow-up"></i></button>
-          <button @click="delItem(idx, mergeConfig.requiredDelConfirm, mergeConfig.delConfirmText.item || $nclang('delItemTips'))" v-if="(!mergeConfig.disableDel && !isDelExceptionRow(dataItem.__dataSchema)) || (mergeConfig.disableDel && isDelExceptionRow(dataItem.__dataSchema))" type="button" class="el-button el-button--danger el-button--mini"><i class="el-icon-remove"></i></button>
-          <button @click="itemUp(idx)" v-show="idx !== 0" v-if="!mergeConfig.disableReorder" type="button" class="el-button el-button--mini"><i class="el-icon-sort-up"></i></button>
-          <button @click="itemDown(idx)" v-show="idx !== schema.value.length - 1" v-if="!mergeConfig.disableReorder" type="button" class="el-button el-button--mini"><i class="el-icon-sort-down"></i></button>
+        <div class="button-group">
+          <md-button @click="collapseItem(dataItem.__dataSchema)" v-show="dataItem.__dataSchema._expand" v-if="!mergeConfig.disableItemCollapse" type="button" class="md-icon-button"><i class="fa fa-angle-down"></i></md-button>
+          <md-button @click="collapseItem(dataItem.__dataSchema)" v-show="!dataItem.__dataSchema._expand" v-if="!mergeConfig.disableItemCollapse" type="button" class="md-icon-button"><i class="fa fa-angle-up"></i></md-button>
+          <md-button @click="delItem(idx, mergeConfig.requiredDelConfirm, mergeConfig.delConfirmText.item || $nclang('delItemTips'))" v-if="(!mergeConfig.disableDel && !isDelExceptionRow(dataItem.__dataSchema)) || (mergeConfig.disableDel && isDelExceptionRow(dataItem.__dataSchema))" type="button" class="md-icon-button"><i class="fa fa-trash-o"></i></md-button>
+          <md-button @click="itemUp(idx)" v-show="idx !== 0" v-if="!mergeConfig.disableReorder" type="button" class="md-icon-button"><i class="fa fa-arrow-up"></i></md-button>
+          <md-button @click="itemDown(idx)" v-show="idx !== schema.value.length - 1" v-if="!mergeConfig.disableReorder" type="button" class="md-icon-button"><i class="fa fa-arrow-down"></i></md-button>
         </div>
       </div>
 
@@ -43,9 +43,9 @@
     </div>
 
     <!-- 列表控制按钮 -->
-    <div v-show="!collapsed" class="el-button-group" v-if="!mergeConfig.disableAdd || !mergeConfig.disableDel">
-      <button @click="addItem()" v-if="!mergeConfig.disableAdd" type="button" class="el-button el-button--mini"><i class="el-icon-circle-plus-outline"></i> {{mergeConfig.addTxt || $nclang('add')}}</button>
-      <button @click="delAllItems(mergeConfig.requiredDelConfirm, mergeConfig.delConfirmText.all || $nclang('delAllTips'))" v-if="!mergeConfig.disableDel" type="button" class="el-button el-button--danger el-button--mini"><i class="el-icon-remove"></i> {{mergeConfig.delAllTxt || $nclang('delAll')}}</button>
+    <div v-show="!collapsed" v-if="!mergeConfig.disableAdd || !mergeConfig.disableDel">
+      <md-button @click="addItem()" v-if="!mergeConfig.disableAdd" class="md-primary"><i class="fa fa-plus"></i> {{mergeConfig.addTxt || $nclang('add')}}</md-button>
+      <md-button @click="delAllItems(mergeConfig.requiredDelConfirm, mergeConfig.delConfirmText.all || $nclang('delAllTips'))" v-if="!mergeConfig.disableDel" class="md-accent"><i class="fa fa-minus"></i> {{mergeConfig.delAllTxt || $nclang('delAll')}}</md-button>
     </div>
 
   </div>
@@ -58,18 +58,13 @@
     // margin-top: 8px;
 
     & > legend {
-      border-left: 6px solid #878D99;
+      border-left: 6px solid rgba(0, 0, 0, 0.12);
       padding: 6px;
-      background-color: #d8dce5;
-      color: #5a5e66;
+      background-color: rgb(68, 138, 255);
+      color: #fff;
       font-size: 14px;
       margin-bottom: 0px;
       border-radius: 4px 4px 0 0;
-
-      .el-collapse-item__arrow {
-        line-height: 22px;
-        cursor: pointer;
-      }
     }
 
     .list-item {
@@ -84,6 +79,12 @@
     }
     .normal-item {
       padding: 4px 8px 8px 8px;
+    }
+
+    .button-group {
+      position: relative;
+      display: inline-block;
+      top: -10px;
     }
   }
 </style>

@@ -4,38 +4,47 @@
 
     <legend v-if="schema.ui.legend && schema.ui.showLegend" @click="collapse()">
       {{_analyzeVal(schema.ui.legend)}}
-      <i v-if="!mergeConfig.disableCollapse" class="el-collapse-item__arrow" :class="{'el-icon-arrow-up': !collapsed, 'el-icon-arrow-down': collapsed}"></i>
+      <i v-if="!mergeConfig.disableCollapse" class="fa" :class="{'fa-angle-down': !collapsed, 'fa-angle-up': collapsed}"></i>
     </legend>
 
-    <el-tabs v-show="!collapsed" :addable="!mergeConfig.disableAdd" type="card" :tab-position="mergeConfig.tabPosition" @edit="handleTabsEdit" v-model="activeName">
-      <el-tab-pane v-for="(dataItem, idx) in schema.value" :key="dataItem.__dataSchema.__id" :closable="(!mergeConfig.disableDel && !isDelExceptionRow(dataItem.__dataSchema)) || (mergeConfig.disableDel && isDelExceptionRow(dataItem.__dataSchema))" :name="'' + idx">
-
-        <span slot="label">
-          {{_analyzeVal(dataItem.__dataSchema.ui.label) + ' ' + (idx + 1)}}
+    <md-tabs v-show="!collapsed" :md-active-tab="activeName">
+      <template slot="md-tab" slot-scope="{ tab }">
+        <span>
+          {{_analyzeVal(tab.data.dataItem.__dataSchema.ui.label) + ' ' + (tab.data.idx + 1)}}
           <!-- 提示信息 -->
-          <el-tooltip class="item" effect="dark" placement="right-start">
-            <div slot="content" v-html="dataItem.__dataSchema.ui.help.content"></div>
-            <a class="help" v-if="dataItem.__dataSchema.ui.help.show === true" href="#"><span :class="dataItem.__dataSchema.ui.help.iconCls">{{dataItem.__dataSchema.ui.help.text}}</span></a>
-          </el-tooltip>
+          <div style="display: inline-block">
+            <a class="help" v-if="tab.data.dataItem.__dataSchema.ui.help.show === true" href="#"><span :class="tab.data.dataItem.__dataSchema.ui.help.iconCls">{{tab.data.dataItem.__dataSchema.ui.help.text}}</span></a>
+            <md-tooltip md-direction="top">{{tab.data.dataItem.__dataSchema.ui.help.content}}</md-tooltip>
+          </div>
+
+          <span v-if="(!mergeConfig.disableDel && !isDelExceptionRow(tab.data.dataItem.__dataSchema)) || (mergeConfig.disableDel && isDelExceptionRow(tab.data.dataItem.__dataSchema))" @click.stop="handleTabsEdit(tab.data.idx + '', 'remove')" >
+            <i class="fa fa-times"></i>
+          </span>
         </span>
+      </template>
 
+      <md-tab v-for="(dataItem, idx) in schema.value" :key="dataItem.__dataSchema.__id" :closable="(!mergeConfig.disableDel && !isDelExceptionRow(dataItem.__dataSchema)) || (mergeConfig.disableDel && isDelExceptionRow(dataItem.__dataSchema))" :md-template-data="{ dataItem: dataItem, idx: idx, fieldSchema: fieldSchema }" :id="'' + idx">
         <!-- array item 是 正常的 object 类型 -->
-        <template v-if="isNormalObjSchema(dataItem.__dataSchema)">
-          <ncform-object :schema="dataItem.__dataSchema" :form-data="formData" :idx-chain="(idxChain ? idxChain + ',' : '') + idx" :config="dataItem.__dataSchema.ui.widgetConfig" :show-legend="false">
+          <template v-if="isNormalObjSchema(dataItem.__dataSchema)">
+            <ncform-object :schema="dataItem.__dataSchema" :form-data="formData" :idx-chain="(idxChain ? idxChain + ',' : '') + idx" :config="dataItem.__dataSchema.ui.widgetConfig" :show-legend="false">
 
-            <template v-for="(fieldSchema, fieldName) in (dataItem.__dataSchema.properties || {__notObjItem: dataItem.__dataSchema})" :slot="fieldName"><!-- 注意：__notObjItem 这个Key为与form-item约定好的值，其它名字不生效 -->
-              <slot :name="fieldName" :schema="fieldSchema" :idx="idx"></slot>
-            </template>
+              <template v-for="(fieldSchema, fieldName) in (dataItem.__dataSchema.properties || {__notObjItem: dataItem.__dataSchema})" :slot="fieldName"><!-- 注意：__notObjItem 这个Key为与form-item约定好的值，其它名字不生效 -->
+                <slot :name="fieldName" :schema="fieldSchema" :idx="idx"></slot>
+              </template>
 
-          </ncform-object>
-        </template>
+            </ncform-object>
+          </template>
 
-        <!-- array item 是 非正常的 object 类型 以及 其它类型 -->
-        <template v-else>
-          <slot name="__notObjItem" :schema="dataItem.__dataSchema" :idx="idx"></slot> <!-- 注意：__notObjItem 和 __dataSchema 都是约定好的值，其它名字不生效 -->
-        </template>
-      </el-tab-pane>
-    </el-tabs>
+          <!-- array item 是 非正常的 object 类型 以及 其它类型 -->
+          <template v-else>
+            <slot name="__notObjItem" :schema="dataItem.__dataSchema" :idx="idx"></slot> <!-- 注意：__notObjItem 和 __dataSchema 都是约定好的值，其它名字不生效 -->
+          </template>
+      </md-tab>
+    </md-tabs>
+
+    <md-button v-if="!mergeConfig.disableAdd" class="md-icon-button add-btn" @click="handleTabsEdit(null, 'add')">
+      <i class="fa fa-plus"></i>
+    </md-button>
 
   </div>
 
@@ -45,40 +54,22 @@
   .__array-tabs-form-item {
 
     // margin-top: 8px;
+    position: relative;
 
     & > legend {
-      border-left: 6px solid #878D99;
+      border-left: 6px solid rgba(0, 0, 0, 0.12);
       padding: 6px;
-      background-color: #d8dce5;
-      color: #5a5e66;
+      background-color: rgb(68, 138, 255);
+      color: #fff;
       font-size: 14px;
       margin-bottom: 0px;
       border-radius: 4px 4px 0 0;
-
-      .el-collapse-item__arrow {
-        cursor: pointer;
-        line-height: 22px;
-      }
     }
 
-    .el-tabs {
-      margin-top: 6px;
-      &.el-tabs--left {
-        .el-tabs__new-tab {
-          margin-left: 0;
-          .el-icon-plus {
-            width: 100%;
-          }
-        }
-      }
-    }
-
-    .el-tab-pane > .__object-form-item > .el-row {
-      border: none;
-      margin-top: -8px
-    }
-    .el-tabs__header {
-      margin: 0 0 8px;
+    .add-btn {
+      position: absolute;
+      right: -6px;
+      top: 35px;
     }
   }
 </style>

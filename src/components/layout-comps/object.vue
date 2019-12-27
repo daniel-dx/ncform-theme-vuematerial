@@ -2,28 +2,29 @@
   <div class="__object-form-item">
     <legend v-if="legendEnable(schema) && showLegend" @click="collapse()">
       {{_analyzeVal(schema.ui.legend)}}
-      <i v-if="!mergeConfig.disableCollapse" class="el-collapse-item__arrow" :class="{'el-icon-arrow-up': !collapsed, 'el-icon-arrow-down': collapsed}"></i>
+      <i v-if="!mergeConfig.disableCollapse" class="fa" :class="{'fa-angle-down': !collapsed, 'fa-angle-up': collapsed}"></i>
     </legend>
 
     <!-- 垂直布局，即label上，control下 -->
-    <div v-if="mergeConfig.layout === 'v'" v-show="!collapsed" class="el-row v-layout" style="width: 100%">
+    <div v-if="mergeConfig.layout === 'v'" v-show="!collapsed" class="md-layout v-layout" style="width: 100%">
 
       <div v-for="(fieldSchema, field) in schema.properties"
           :key="field"
-          :class="['el-col-' + (fieldSchema.ui.columns * 2 || 24)]"
+          :class="['md-size-' + ((fieldSchema.ui.columns / 12 * 100) || 100)]"
           :style="{display: _analyzeVal(fieldSchema.ui.hidden) ? 'none' : ''}"
-          class="el-col el-form-item">
+          class="md-layout-item form-item">
 
         <template>
-            <label v-if="!fieldSchema.ui.noLabelSpace" :style="{'visibility': fieldSchema.ui.showLabel ? 'visible' : 'hidden'}" class="el-form-item__label">
+
+            <label v-if="!fieldSchema.ui.noLabelSpace" :style="{'visibility': fieldSchema.ui.showLabel ? 'visible' : 'hidden'}" class="form-item__label">
               <!-- 必填标识 -->
               <i v-if="_analyzeVal(fieldSchema.rules.required) === true || (typeof fieldSchema.rules.required === 'object' && _analyzeVal(fieldSchema.rules.required.value) === true)" class="text-danger">*</i>
               {{_analyzeVal(fieldSchema.ui.label)}}
               <!-- 提示信息 -->
-              <el-tooltip class="item" effect="dark" :content="fieldSchema.ui.help.content" placement="right-start">
-                <div slot="content" v-html="fieldSchema.ui.help.content"></div>
+              <div style="display: inline-block">
                 <a class="help" v-if="fieldSchema.ui.help.show === true" href="#"><span :class="fieldSchema.ui.help.iconCls">{{fieldSchema.ui.help.text}}</span></a>
-              </el-tooltip>
+                <md-tooltip md-direction="top">{{fieldSchema.ui.help.content}}</md-tooltip>
+              </div>
             </label>
 
             <div style="clear: both">
@@ -40,25 +41,25 @@
     </div>
 
     <!-- 水平布局，即label左，control右 -->
-    <div v-if="mergeConfig.layout === 'h'" v-show="!collapsed" class="el-row h-layout" style="width: 100%">
+    <div v-if="mergeConfig.layout === 'h'" v-show="!collapsed" class="md-layout h-layout" style="width: 100%">
       <div v-for="(fieldSchema, field) in schema.properties"
           :key="field"
-          :class="['el-col-' + (fieldSchema.ui.columns * 2 || 24)]"
+          :class="['md-size-' + ((fieldSchema.ui.columns / 12 * 100) || 100)]"
           :style="{display: _analyzeVal(fieldSchema.ui.hidden) ? 'none' : ''}"
-          class="el-col el-form-item">
+          class="md-layout-item form-item">
         <template>
-          <label v-if="!fieldSchema.ui.noLabelSpace" :style="{'visibility': fieldSchema.ui.showLabel ? 'visible' : 'hidden', width: mergeConfig.labelWidth}"  class="el-form-item__label">
+          <label v-if="!fieldSchema.ui.noLabelSpace" :style="{'visibility': fieldSchema.ui.showLabel ? 'visible' : 'hidden', width: mergeConfig.labelWidth}"  class="form-item__label">
             <!-- 必填标识 -->
             <i v-if="_analyzeVal(fieldSchema.rules.required) === true || (typeof fieldSchema.rules.required === 'object' && _analyzeVal(fieldSchema.rules.required.value) === true)" class="text-danger">*</i>
             {{_analyzeVal(fieldSchema.ui.label)}}
             <!-- 提示信息 -->
-            <el-tooltip class="item" effect="dark" placement="right-start">
-              <div slot="content" v-html="fieldSchema.ui.help.content"></div>
+            <div style="display: inline-block">
               <a class="help" v-if="fieldSchema.ui.help.show === true" href="#"><span :class="fieldSchema.ui.help.iconCls">{{fieldSchema.ui.help.text}}</span></a>
-            </el-tooltip>
+              <md-tooltip md-direction="top">{{fieldSchema.ui.help.content}}</md-tooltip>
+            </div>
             :
           </label>
-          <div class="el-form-item__content" :style="{'margin-left': (fieldSchema.ui.noLabelSpace) ? '0px' : mergeConfig.labelWidth}">
+          <div class="form-item__content" :style="{'margin-left': (fieldSchema.ui.noLabelSpace) ? '0px' : mergeConfig.labelWidth}">
             <slot :name="field"></slot>
             <!-- 说明信息 -->
             <small v-if="fieldSchema.ui.description" class="form-desc" v-html="_analyzeVal(fieldSchema.ui.description)">
@@ -78,18 +79,14 @@
     margin-top: 8px;
 
     & > legend {
-      border-left: 6px solid #878D99;
+      border-left: 6px solid rgba(0, 0, 0, 0.12);
       padding: 6px;
-      background-color: #d8dce5;
-      color: #5a5e66;
+      background-color: rgb(68, 138, 255);
+      color: #fff;
       font-size: 14px;
       margin-bottom: 0px;
       border-radius: 4px 4px 0 0;
       cursor: pointer;
-
-      .el-collapse-item__arrow {
-        line-height: 22px;
-      }
     }
 
     & > [class*=-layout] {
@@ -97,9 +94,9 @@
       padding: 8px;
     }
 
-    .el-form-item {
+    .form-item {
       position: relative;
-      margin-bottom: 0;
+      margin-bottom: 8px;
     }
     .form-desc {
       color: #868e96!important;
@@ -110,32 +107,33 @@
       background-color: transparent;
     }
 
-    .el-row {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .el-row>[class*=el-col-] {
-      padding-right: 5px;
-      padding-left: 5px;
-    }
     .text-danger {
       color: #FA5555
     }
 
     .v-layout {
-      .el-form-item__label {
-        font-weight: bold;
-      }
-      .el-form-item__error {
-        position: relative;
+      .form-item__label {
+        .form-item__label {
+            color: rgba(0, 0, 0, 0.87);
+            font-size: 14px;
+            font-weight: 500;
+        }
       }
     }
 
     .h-layout {
-      .el-form-item {
+      .form-item {
         margin-bottom: 22px;
-        .el-form-item__content {
+        .form-item__label {
+          color: rgba(0,0,0,.54);
+          font-size: 14px;
+          font-weight: 400;
+          text-align: right;
+          padding-right: 5px;
+          float: left;
+          margin-top: 8px;
+        }
+        .form-item__content {
           line-height: unset;
         }
       }
